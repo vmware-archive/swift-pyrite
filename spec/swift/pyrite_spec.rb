@@ -8,7 +8,7 @@ describe Swift::Pyrite do
   end
 
   let(:output_path) { File.join(File.dirname(__FILE__), "../../out/out.swift") }
-  let(:fixture_path) { File.join(File.dirname(__FILE__), "../protocol/#{name}.swift") }
+  let(:fixture_path) { File.join(File.dirname(__FILE__), "../protocols/#{name}.swift") }
   let(:expected_path) { File.join(File.dirname(__FILE__), "../expected_fakes/#{name}.swift") }
 
   let(:expected_code) { File.read(expected_path) }
