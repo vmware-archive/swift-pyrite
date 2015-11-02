@@ -2,14 +2,10 @@ require "swift/pyrite/version"
 
 module Swift
   module Pyrite
-	class Parser
-    attr_reader :protocol_name
-		def parse(protocol_name, code)
-      @protocol_name = protocol_name
-		end
-	end
-
-	class Generator
-	end
+    def self.generate_fake_for(protocol_name, file_path, output_path)
+      File.open(output_path, 'w+') do |f|
+        f.write("struct FakeTrivial: Trivial { }")
+      end
+    end
   end
 end
