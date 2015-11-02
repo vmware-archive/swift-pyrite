@@ -1,0 +1,3 @@
+protocol SingleMethod {
+  func theMethod()
+}
