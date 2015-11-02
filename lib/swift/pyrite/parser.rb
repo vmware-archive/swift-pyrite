@@ -25,7 +25,8 @@ module Swift
 
       rule(:colon)      { str(":") }
 
-      rule(:funcSignature) { str(' ').repeat(1).maybe >> str("func").as(:type) >> space >> (identifier.as(:name) >> lparen >> rparen).as(:funcSignature) >> newline }
+      rule(:indentation) { (str(' ') | str("\t")).repeat(1).maybe }
+      rule(:funcSignature) { indentation >> str("func").as(:type) >> space >> (identifier.as(:name) >> lparen >> rparen).as(:funcSignature) >> newline }
 
 
       rule(:expression)  { funcSignature.repeat(1) }

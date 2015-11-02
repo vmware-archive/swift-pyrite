@@ -3,4 +3,5 @@ struct FakeSingleMethod: SingleMethod {
   func theMethod() {
     callsTotheMethod += 1
   }
+
 }

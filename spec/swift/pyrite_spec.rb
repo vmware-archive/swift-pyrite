@@ -31,4 +31,13 @@ describe Swift::Pyrite do
       expect(actual_code).to(eq(expected_code))
     end
   end
+
+    context "a multi-method protocol" do
+    let(:name) { 'multiple_methods' }
+
+    it 'parses' do
+      Swift::Pyrite.generate_fake_for("MultipleMethods", fixture_path, output_path)
+      expect(actual_code).to(eq(expected_code))
+    end
+  end
 end

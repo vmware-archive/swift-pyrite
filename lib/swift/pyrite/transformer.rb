@@ -18,7 +18,7 @@ module Swift
       def generate
         output = []
         output << "struct #{struct_name}: #{protocol_name} {"
-        (@ast[:expressions] || []).each do |exp|
+        (@ast[:expressions] || []).map do |exp|
           output << expression(exp)
         end
         output << "}"
@@ -38,6 +38,7 @@ module Swift
         output << "  func #{name}() {"
         output << "    callsTo#{name} += 1"
         output << "  }"
+        output << ""
         output.join("\n")
       end
     end
