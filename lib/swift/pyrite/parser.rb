@@ -2,7 +2,7 @@ require 'parslet'
 
 module Swift
   module Pyrite
-    class SwiftParser < Parslet::Parser
+    class Parser < Parslet::Parser
       rule(:protocol)   { 
         str("protocol") >> space >> identifier.as(:protocol_name) >> space? >> lcurly >> 
         space? >> expression?.as(:expressions) >> space? >> 
@@ -25,7 +25,7 @@ module Swift
 
       rule(:colon)      { str(":") }
 
-      rule(:funcSignature) { str(' ').repeat(1).maybe >> (str("func") >> space >> identifier >> lparen >> rparen).as(:funcSignature) >> newline }
+      rule(:funcSignature) { str(' ').repeat(1).maybe >> str("func").as(:type) >> space >> (identifier.as(:name) >> lparen >> rparen).as(:funcSignature) >> newline }
 
 
       rule(:expression)  { funcSignature.repeat(1) }
