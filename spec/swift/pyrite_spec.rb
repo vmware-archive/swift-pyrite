@@ -77,11 +77,20 @@ describe Swift::Pyrite do
     end
   end
 
-   context "multiple return values" do
+  context "multiple return values" do
     let(:name) { 'multiple_return' }
 
     it 'parses' do
       Swift::Pyrite.generate_fake_for("MultipleReturn", fixture_path, output_path)
+      expect(actual_code).to(eq(expected_code))
+    end
+  end
+
+  context "busy files" do
+    let(:name) { 'busy' }
+
+    it 'parses' do
+      Swift::Pyrite.generate_fake_for("Busy", fixture_path, output_path)
       expect(actual_code).to(eq(expected_code))
     end
   end
