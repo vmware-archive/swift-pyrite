@@ -32,7 +32,7 @@ describe Swift::Pyrite do
     end
   end
 
-    context "a multi-method protocol" do
+  context "a multi-method protocol" do
     let(:name) { 'multiple_methods' }
 
     it 'parses' do
@@ -40,4 +40,14 @@ describe Swift::Pyrite do
       expect(actual_code).to(eq(expected_code))
     end
   end
+
+  context "a single argument method" do
+    let(:name) { 'one_argument' }
+
+    it 'parses' do
+      Swift::Pyrite.generate_fake_for("OneArgument", fixture_path, output_path)
+      expect(actual_code).to(eq(expected_code))
+    end
+  end
+
 end

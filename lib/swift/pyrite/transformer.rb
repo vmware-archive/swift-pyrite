@@ -34,12 +34,39 @@ module Swift
       def stubFunction(exp)
         name = exp[:name]
         output = []
-        output << "  var callsTo#{name}: Int = 0"
-        output << "  func #{name}() {"
+        output << variables(exp)
+        output << "  mutating func #{name}(#{arguments(exp[:arguments])}) {"
         output << "    callsTo#{name} += 1"
+        unless exp[:arguments].nil?
+          output << saveArguments(name, exp[:arguments])
+        end
         output << "  }"
         output << ""
         output.join("\n")
+      end
+
+      def variables(exp)
+        output = []
+        output << "  var callsTo#{exp[:name]}: Int = 0"
+        unless exp[:arguments].nil?
+          types = exp[:arguments].map {|a| a[:type] }
+          tupleType = "(" + types.join(", ") + ")"
+          output << "  var argsTo#{exp[:name]}: [#{tupleType}] = [#{tupleType}]()"
+        end
+        output.join("\n")
+      end
+
+      def arguments(exp)
+        return if exp.nil?
+        output = []
+        exp.each do |arg|
+          output << "#{arg[:name]}: #{arg[:type]}"
+        end
+        output.join(", ")
+      end
+
+      def saveArguments(funcname, exp)
+        "    argsTo#{funcname}.append((" + exp.map {|a| a[:name] }.join(", ") + "))"
       end
     end
   end
