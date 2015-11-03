@@ -9,7 +9,18 @@ module Swift
         rcurly 
       }
 
-      rule(:identifier) { lsquare.maybe >> match("[A-Za-z_]").repeat(1) >> rsquare.maybe}
+      rule(:identifier) { match("[A-Za-z_]").repeat(1) }
+
+      rule(:type) {
+        lsquare.maybe >>
+        identifier >>
+        (
+          langle >>
+          type >>
+          rangle
+        ).maybe >>
+        rsquare.maybe
+      }
 
       rule(:space)      { match(/\s/).repeat(1) }
       rule(:space?)     { space.maybe }
@@ -26,6 +37,9 @@ module Swift
       rule(:lsquare)    { str("[") }
       rule(:rsquare)    { str("]") }
 
+      rule(:langle)     { str('<') }
+      rule(:rangle)     { str('>') }
+
       rule(:colon)      { str(":") }
 
       rule(:arrow)      { space? >> str("->") >> space? }
@@ -33,7 +47,7 @@ module Swift
       rule(:indentation) { (str(' ') | str("\t")).repeat(1).maybe }
 
       rule(:funcSignature) { indentation >> str("func").as(:type) >> space >> (identifier.as(:name) >> 
-        lparen >> arguments.as(:arguments).maybe >> rparen >> (arrow >> lparen.maybe >> identifier.as(:returnTypes) >> rparen.maybe).maybe).as(:funcSignature) >> 
+        lparen >> arguments.as(:arguments).maybe >> rparen >> (arrow >> lparen.maybe >> type.as(:returnTypes) >> rparen.maybe).maybe).as(:funcSignature) >> 
         newline 
       }
 
@@ -41,7 +55,7 @@ module Swift
 
       rule(:comma) { str(",") }
       rule(:comma_space) { space? >> comma.maybe >> space? }
-      rule(:arguments) { (identifier.as(:name) >> colon >> space? >> identifier.as(:type) >> comma_space).repeat(1) }
+      rule(:arguments) { (identifier.as(:name) >> colon >> space? >> type.as(:type) >> comma_space).repeat(1) }
 
       rule(:expression)  { funcSignature.repeat(1) }
       rule(:expression?) { expression.maybe }
