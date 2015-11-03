@@ -8,7 +8,7 @@ module Swift
       end
 
       def protocol_name
-        @ast[:protocol_name]
+        @ast[:protocol]
       end
 
       def struct_name
@@ -26,6 +26,7 @@ module Swift
       end
 
       def expression(exp)
+        p exp
         if exp[:type] == 'func'
           stubFunction(exp[:funcSignature])
         end

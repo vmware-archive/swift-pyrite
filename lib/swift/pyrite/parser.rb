@@ -3,66 +3,22 @@ require 'parslet'
 module Swift
   module Pyrite
     class Parser < Parslet::Parser
-      rule(:protocol)   { 
-        str("protocol") >> space >> identifier.as(:protocol_name) >> space? >> lcurly >> 
-        space? >> expression?.as(:expressions) >> space? >> 
-        rcurly 
-      }
+      rule(:ws) { match(/\s/).repeat(1) }
+      rule(:ws?) { ws.maybe }
 
-      rule(:identifier) { match("[A-Za-z_]").repeat(1) }
+      rule(:brace_expression) { str('{') >> ws? >> func_decl? >> str('}') }
+      rule(:tuple) { str('(') >> str(')') }
 
-      rule(:type) {
-        lsquare.maybe >>
-        identifier >>
-        (
-          langle >>
-          type >>
-          rangle
-        ).maybe >>
-        rsquare.maybe
-      }
+      rule(:func_decl) { ws? >> str('func').as(:type) >> ws? >> identifier.as(:func_decl) >> ws? >> tuple >> ws? }
+      rule(:func_decl?) { func_decl.maybe }
 
-      rule(:space)      { match(/\s/).repeat(1) }
-      rule(:space?)     { space.maybe }
+      rule(:identifier) { match('[A-Za-z_]').repeat(1) }
 
-      rule(:tab)        { match(/\t/) }
-      rule(:newline)    { match(/\n/) }
+      rule(:protocol) { str('protocol') >> ws? >> identifier.as(:protocol) >> ws? >> brace_expression }
 
-      rule(:lcurly)     { str("{") }
-      rule(:rcurly)     { str("}") }
+      rule(:source_file) { protocol }
 
-      rule(:lparen)     { str("(") }
-      rule(:rparen)     { str(")") }
-
-      rule(:lsquare)    { str("[") }
-      rule(:rsquare)    { str("]") }
-
-      rule(:langle)     { str('<') }
-      rule(:rangle)     { str('>') }
-
-      rule(:colon)      { str(":") }
-
-      rule(:arrow)      { space? >> str("->") >> space? }
-
-      rule(:indentation) { (str(' ') | str("\t")).repeat(1).maybe }
-
-      rule(:funcSignature) { indentation >> str("func").as(:type) >> space >> (identifier.as(:name) >> 
-        lparen >> arguments.as(:arguments).maybe >> rparen >> (arrow >> lparen.maybe >> type.as(:returnTypes) >> rparen.maybe).maybe).as(:funcSignature) >> 
-        newline 
-      }
-
-      rule(:returnTypes) { (identifier.as(:returnType) >> comma_space.maybe).repeat(1) }
-
-      rule(:comma) { str(",") }
-      rule(:comma_space) { space? >> comma.maybe >> space? }
-      rule(:arguments) { (identifier.as(:name) >> colon >> space? >> type.as(:type) >> comma_space).repeat(1) }
-
-      rule(:expression)  { funcSignature.repeat(1) }
-      rule(:expression?) { expression.maybe }
-
-
-      rule(:file) { protocol }
-      root(:file)
+      rule(:root) { source_file }
     end
   end
 end
