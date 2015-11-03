@@ -1,12 +1,12 @@
 class FakeMultipleMethods: MultipleMethods {
-  var callsTofirst: Int = 0
+  var firstCallCount: Int = 0
   func first() {
-    callsTofirst += 1
+    firstCallCount += 1
   }
 
-  var callsTosecond: Int = 0
+  var secondCallCount: Int = 0
   func second() {
-    callsTosecond += 1
+    secondCallCount += 1
   }
 
 }

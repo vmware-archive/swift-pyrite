@@ -36,7 +36,7 @@ module Swift
         output = []
         output << variables(exp)
         output << "  func #{name}(#{arguments(exp[:arguments])}) {"
-        output << "    callsTo#{name} += 1"
+        output << "    #{name}CallCount += 1"
         unless exp[:arguments].nil?
           output << saveArguments(name, exp[:arguments])
         end
@@ -47,11 +47,11 @@ module Swift
 
       def variables(exp)
         output = []
-        output << "  var callsTo#{exp[:name]}: Int = 0"
+        output << "  var #{exp[:name]}CallCount: Int = 0"
         unless exp[:arguments].nil?
           types = exp[:arguments].map {|a| a[:type] }
           tupleType = "(" + types.join(", ") + ")"
-          output << "  var argsTo#{exp[:name]}: [#{tupleType}] = [#{tupleType}]()"
+          output << "  var #{exp[:name]}CalledWith: [#{tupleType}] = [#{tupleType}]()"
         end
         output.join("\n")
       end
@@ -66,7 +66,7 @@ module Swift
       end
 
       def saveArguments(funcname, exp)
-        "    argsTo#{funcname}.append((" + exp.map {|a| a[:name] }.join(", ") + "))"
+        "    #{funcname}CalledWith.append((" + exp.map {|a| a[:name] }.join(", ") + "))"
       end
     end
   end

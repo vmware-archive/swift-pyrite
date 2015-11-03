@@ -1,7 +1,7 @@
 class FakeSingleMethod: SingleMethod {
-  var callsTotheMethod: Int = 0
+  var theMethodCallCount: Int = 0
   func theMethod() {
-    callsTotheMethod += 1
+    theMethodCallCount += 1
   }
 
 }

@@ -1,9 +1,9 @@
 class FakeOneArgument: OneArgument {
-  var callsTodouble: Int = 0
-  var argsTodouble: [(Int)] = [(Int)]()
+  var doubleCallCount: Int = 0
+  var doubleCalledWith: [(Int)] = [(Int)]()
   func double(x: Int) {
-    callsTodouble += 1
-    argsTodouble.append((x))
+    doubleCallCount += 1
+    doubleCalledWith.append((x))
   }
 
 }
