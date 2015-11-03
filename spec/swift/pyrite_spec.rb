@@ -59,4 +59,13 @@ describe Swift::Pyrite do
     end
   end
 
+  context "a return method" do
+    let(:name) { 'return_value' }
+
+    it 'parses' do
+      Swift::Pyrite.generate_fake_for("ReturnValue", fixture_path, output_path)
+      expect(actual_code).to(eq(expected_code))
+    end
+  end
+
 end
