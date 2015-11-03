@@ -26,9 +26,8 @@ module Swift
       end
 
       def expression(exp)
-        p exp
         if exp[:type] == 'func'
-          stubFunction(exp[:funcSignature])
+          stubFunction(exp[:func_decl])
         end
       end
 

@@ -6,11 +6,11 @@ module Swift
       rule(:ws) { match(/\s/).repeat(1) }
       rule(:ws?) { ws.maybe }
 
-      rule(:brace_expression) { str('{') >> ws? >> func_decl? >> str('}') }
+      rule(:brace_expression) { str('{') >> ws? >> (func_decl).repeat.as(:expressions) >> str('}') }
       rule(:tuple) { str('(') >> str(')') }
 
-      rule(:func_decl) { ws? >> str('func').as(:type) >> ws? >> identifier.as(:func_decl) >> ws? >> tuple >> ws? }
-      rule(:func_decl?) { func_decl.maybe }
+      rule(:func_decl) { ws? >> str('func').as(:type) >> ws? >> (identifier.as(:name) >> ws? >> tuple >> ws?).as(:func_decl) }
+      rule(:func_decl?) { func_decl.as.maybe }
 
       rule(:identifier) { match('[A-Za-z_]').repeat(1) }
 
