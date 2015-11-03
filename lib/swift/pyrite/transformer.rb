@@ -51,18 +51,30 @@ module Swift
       def variables(exp)
         output = []
         output << "  var #{exp[:name]}CallCount: Int = 0"
-        puts "=" * 80
-        p exp
-        puts "=" * 80
         unless exp[:arguments].nil?
           types = exp[:arguments].map {|a| a[:type] }
           tupleType = "(" + types.join(", ") + ")"
           output << "  var #{exp[:name]}CalledWith: [#{tupleType}] = [#{tupleType}]()"
         end
         unless exp[:returnTypes].nil?
-          output << "  var #{exp[:name]}Returns: #{exp[:returnTypes]}"
+          output << "  var #{exp[:name]}Returns: #{tuple(exp[:returnTypes])}"
         end
         output.join("\n")
+      end
+
+      def tuple(exp)
+        results = exp.map do |item|
+          if item[:name]
+            "#{item[:name]}: #{item[:type]}"
+          else
+            item[:type]
+          end
+        end
+        if results.count > 1 
+          "(#{results.join(', ')})"
+        else
+          results.join
+        end
       end
 
       def arguments(exp)
@@ -80,7 +92,7 @@ module Swift
 
       def returns(returnTypes)
         return if returnTypes.nil?
-        "-> #{returnTypes} "
+        "-> #{tuple(returnTypes)} "
       end
 
     end

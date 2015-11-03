@@ -7,11 +7,11 @@ module Swift
       rule(:ws?) { ws.maybe }
 
       rule(:generic) { str('<') >> type >> str('>') }
-      rule(:type) { str('[').maybe >> identifier >> generic.maybe >> str(']').maybe }
+      rule(:type) { (str('[').maybe >> identifier >> generic.maybe >> str(']').maybe).as(:type) }
 
       rule(:brace_expression) { str('{') >> ws? >> (func_decl).repeat.as(:expressions) >> str('}') }
 
-      rule(:tuple_part) { identifier.as(:name) >> str(':') >> ws? >> type.as(:type) }
+      rule(:tuple_part) { (identifier.as(:name) >> str(':')).maybe >> ws? >> type }
       rule(:tuple) { str('(') >> (tuple_part >> (str(',') >> ws?).maybe).repeat(1) >> ws? >> str(')') }
       rule(:empty_tuple) { str('(') >> ws? >> str(')') }
 
@@ -19,7 +19,7 @@ module Swift
       rule(:func_decl) { ws? >> str('func').as(:type) >> ws? >> (func_signature >> returnTypes.maybe).as(:func_decl) >> ws? }
       rule(:func_decl?) { func_decl.maybe }
 
-      rule(:returnTypes) { ws? >> str('->') >> ws? >> (type | tuple).as(:returnTypes) }
+      rule(:returnTypes) { ws? >> str('->') >> ws? >> (tuple | type.repeat(1, 1)).as(:returnTypes) }
 
       rule(:identifier) { match('[A-Za-z_]').repeat(1) }
 

@@ -8,8 +8,7 @@ module Swift
       code = File.read(file_path)
       parser = Parser.new
 
-      require 'pp'
-      pp (ast = parser.parse(code))
+      ast = parser.parse(code)
 
       transformer = Transformer.new(ast)
 
