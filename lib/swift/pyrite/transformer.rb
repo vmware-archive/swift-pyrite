@@ -51,6 +51,9 @@ module Swift
       def variables(exp)
         output = []
         output << "  var #{exp[:name]}CallCount: Int = 0"
+        puts "=" * 80
+        p exp
+        puts "=" * 80
         unless exp[:arguments].nil?
           types = exp[:arguments].map {|a| a[:type] }
           tupleType = "(" + types.join(", ") + ")"
