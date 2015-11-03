@@ -13,7 +13,9 @@ module Swift
       rule(:ignore_before) { block_comment | comment | (str('protocol').absent? >> any) }
 
       rule(:generic) { str('<') >> type >> str('>') }
-      rule(:type) { (str('[').maybe >> identifier >> generic.maybe >> str(']').maybe).as(:type) }
+      rule(:type) { (str('[').maybe >> type_name >> generic.maybe >> str(']').maybe).as(:type) }
+
+      rule(:type_name) { identifier >> match('[?!]').maybe }
 
       rule(:brace_expression) { str('{') >> ig >> (var | func_decl).repeat.as(:expressions) >> str('}') }
 

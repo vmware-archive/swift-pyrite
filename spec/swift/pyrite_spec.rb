@@ -36,6 +36,7 @@ describe Swift::Pyrite do
     block_comment
     with_class
     with_variables
+    multiple_variables
   }.each do |file|
     context file do
       let(:name) { file }

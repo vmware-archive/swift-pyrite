@@ -1,4 +1,4 @@
 protocol MultipleVariables {
-  var count: Int
-  var str: String
+  var count: Int? { get }
+  var str: String { get set }
 }
