@@ -1,5 +1,7 @@
 require 'spec_helper'
 require 'fileutils'
+require 'active_support'
+require 'active_support/core_ext'
 
 describe Swift::Pyrite do
   before do
@@ -14,103 +16,30 @@ describe Swift::Pyrite do
   let(:expected_code) { File.read(expected_path) }
   let(:actual_code) { File.read(output_path) }
 
-  context "a trivial protocol" do
-    let(:name) { "trivial" }
-
+  shared_examples_for "a swift file" do
     it "parses" do
-      Swift::Pyrite.generate_fake_for("Trivial", fixture_path, output_path)
+      Swift::Pyrite.generate_fake_for(protocol, fixture_path, output_path)
       expect(actual_code).to(eq(expected_code))
     end
   end
 
-  context "a single-method protocol" do
-    let(:name) { 'single_method' }
-
-    it 'parses' do
-      Swift::Pyrite.generate_fake_for("SingleMethod", fixture_path, output_path)
-      expect(actual_code).to(eq(expected_code))
+  %w{
+    trivial
+    single_method
+    multiple_methods
+    one_argument
+    two_arguments
+    return_value
+    array_return
+    multiple_return
+    busy
+    block_comment
+    with_class
+  }.each do |file|
+    context file do
+      let(:name) { file }
+      let(:protocol) { file.classify }
+      it_behaves_like("a swift file") 
     end
   end
-
-  context "a multi-method protocol" do
-    let(:name) { 'multiple_methods' }
-
-    it 'parses' do
-      Swift::Pyrite.generate_fake_for("MultipleMethods", fixture_path, output_path)
-      expect(actual_code).to(eq(expected_code))
-    end
-  end
-
-  context "a single argument method" do
-    let(:name) { 'one_argument' }
-
-    it 'parses' do
-      Swift::Pyrite.generate_fake_for("OneArgument", fixture_path, output_path)
-      expect(actual_code).to(eq(expected_code))
-    end
-  end
-
-  context "a couple argument method" do
-    let(:name) { 'two_arguments' }
-
-    it 'parses' do
-      Swift::Pyrite.generate_fake_for("TwoArguments", fixture_path, output_path)
-      expect(actual_code).to(eq(expected_code))
-    end
-  end
-
-  context "a return method" do
-    let(:name) { 'return_value' }
-
-    it 'parses' do
-      Swift::Pyrite.generate_fake_for("ReturnValue", fixture_path, output_path)
-      expect(actual_code).to(eq(expected_code))
-    end
-  end
-
-  context "method returning an array" do
-    let(:name) { 'array_return' }
-
-    it 'parses' do
-      Swift::Pyrite.generate_fake_for("ArrayReturn", fixture_path, output_path)
-      expect(actual_code).to(eq(expected_code))
-    end
-  end
-
-  context "multiple return values" do
-    let(:name) { 'multiple_return' }
-
-    it 'parses' do
-      Swift::Pyrite.generate_fake_for("MultipleReturn", fixture_path, output_path)
-      expect(actual_code).to(eq(expected_code))
-    end
-  end
-
-  context "busy files" do
-    let(:name) { 'busy' }
-
-    it 'parses' do
-      Swift::Pyrite.generate_fake_for("Busy", fixture_path, output_path)
-      expect(actual_code).to(eq(expected_code))
-    end
-  end
-
-  context "block comments" do
-    let(:name) { 'block_comment' }
-
-    it 'parses' do
-      Swift::Pyrite.generate_fake_for("BlockComment", fixture_path, output_path)
-      expect(actual_code).to(eq(expected_code))
-    end
-  end
-
-    context "class in file" do
-    let(:name) { 'with_class' }
-
-    it 'parses' do
-      Swift::Pyrite.generate_fake_for("BlockComment", fixture_path, output_path)
-      expect(actual_code).to(eq(expected_code))
-    end
-  end
-
 end
