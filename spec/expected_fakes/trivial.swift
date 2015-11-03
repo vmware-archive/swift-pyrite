@@ -1,2 +1,2 @@
-struct FakeTrivial: Trivial {
+class FakeTrivial: Trivial {
 }

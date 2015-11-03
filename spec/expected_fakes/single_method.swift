@@ -1,6 +1,6 @@
-struct FakeSingleMethod: SingleMethod {
+class FakeSingleMethod: SingleMethod {
   var callsTotheMethod: Int = 0
-  mutating func theMethod() {
+  func theMethod() {
     callsTotheMethod += 1
   }
 

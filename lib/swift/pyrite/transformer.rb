@@ -17,7 +17,7 @@ module Swift
 
       def generate
         output = []
-        output << "struct #{struct_name}: #{protocol_name} {"
+        output << "class #{struct_name}: #{protocol_name} {"
         (@ast[:expressions] || []).map do |exp|
           output << expression(exp)
         end
@@ -35,7 +35,7 @@ module Swift
         name = exp[:name]
         output = []
         output << variables(exp)
-        output << "  mutating func #{name}(#{arguments(exp[:arguments])}) {"
+        output << "  func #{name}(#{arguments(exp[:arguments])}) {"
         output << "    callsTo#{name} += 1"
         unless exp[:arguments].nil?
           output << saveArguments(name, exp[:arguments])

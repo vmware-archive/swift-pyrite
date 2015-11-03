@@ -1,7 +1,7 @@
-struct FakeOneArgument: OneArgument {
+class FakeOneArgument: OneArgument {
   var callsTodouble: Int = 0
   var argsTodouble: [(Int)] = [(Int)]()
-  mutating func double(x: Int) {
+  func double(x: Int) {
     callsTodouble += 1
     argsTodouble.append((x))
   }

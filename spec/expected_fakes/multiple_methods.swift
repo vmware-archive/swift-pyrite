@@ -1,11 +1,11 @@
-struct FakeMultipleMethods: MultipleMethods {
+class FakeMultipleMethods: MultipleMethods {
   var callsTofirst: Int = 0
-  mutating func first() {
+  func first() {
     callsTofirst += 1
   }
 
   var callsTosecond: Int = 0
-  mutating func second() {
+  func second() {
     callsTosecond += 1
   }
 
