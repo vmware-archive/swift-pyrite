@@ -18,6 +18,8 @@ module Swift
       def generate
         output = []
         output << "class #{struct_name}: #{protocol_name} {"
+        init = initializer(@ast)
+        output << init unless init.empty?
         (@ast[:expressions] || []).map do |exp|
           output << expression(exp)
         end
@@ -25,13 +27,40 @@ module Swift
         output.join("\n")
       end
 
+      def initializer(ast)
+        output = []
+        vars = []
+        (@ast[:expressions] || []).map do |exp|
+          next if exp[:type] != 'var'
+          e = exp[:var_decl]
+          name, type = e[:name], e[:type]
+          output << "    self.#{name} = #{name}"
+          vars << "#{name}: #{type}"
+        end
+        if output.size > 0 
+          output.unshift("  init(#{vars.join(', ')}) {")
+          output << "  }"
+        end
+        output.join("\n")
+      end
+
       def expression(exp)
         if exp[:type] == 'func'
-          stubFunction(exp[:func_decl])
+          stub_function(exp[:func_decl])
+        elsif exp[:type] == 'var'
+          copy_variable(exp[:var_decl])
+        else
+          p exp
         end
       end
 
-      def stubFunction(exp)
+      def copy_variable(exp)
+        name = exp[:name]
+        type = exp[:type]
+        "  var #{name}: #{type}"
+      end
+
+      def stub_function(exp)
         name = exp[:name]
         output = []
         output << variables(exp)

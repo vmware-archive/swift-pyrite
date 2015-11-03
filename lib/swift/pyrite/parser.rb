@@ -15,11 +15,13 @@ module Swift
       rule(:generic) { str('<') >> type >> str('>') }
       rule(:type) { (str('[').maybe >> identifier >> generic.maybe >> str(']').maybe).as(:type) }
 
-      rule(:brace_expression) { str('{') >> ig >> (func_decl).repeat.as(:expressions) >> str('}') }
+      rule(:brace_expression) { str('{') >> ig >> (var | func_decl).repeat.as(:expressions) >> str('}') }
 
       rule(:tuple_part) { (identifier.as(:name) >> str(':')).maybe >> ig >> type }
       rule(:tuple) { str('(') >> (tuple_part >> (str(',') >> ig).maybe).repeat(1) >> ig >> str(')') }
       rule(:empty_tuple) { str('(') >> ig >> str(')') }
+
+      rule(:var) { ig >> str('var').as(:type) >> ig >> tuple_part.as(:var_decl) >> ig >> (str('{') >> match(/[sget ]/).repeat >> str('}')) >> ig}
 
       rule(:func_signature) { identifier.as(:name) >> ig >> (tuple.as(:arguments) | empty_tuple) >> ig }
       rule(:func_decl) { ig >> str('func').as(:type) >> ig >> (func_signature >> returnTypes.maybe).as(:func_decl) >> ig }

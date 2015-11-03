@@ -35,6 +35,7 @@ describe Swift::Pyrite do
     busy
     block_comment
     with_class
+    with_variables
   }.each do |file|
     context file do
       let(:name) { file }
