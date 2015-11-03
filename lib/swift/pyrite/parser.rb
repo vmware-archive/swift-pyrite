@@ -9,8 +9,9 @@ module Swift
       rule(:brace_expression) { str('{') >> ws? >> (func_decl).repeat.as(:expressions) >> str('}') }
       rule(:tuple) { str('(') >> str(')') }
 
-      rule(:func_decl) { ws? >> str('func').as(:type) >> ws? >> (identifier.as(:name) >> ws? >> tuple >> ws?).as(:func_decl) }
-      rule(:func_decl?) { func_decl.as.maybe }
+      rule(:func_signature) { identifier.as(:name) >> ws? >> tuple >> ws? }
+      rule(:func_decl) { ws? >> str('func').as(:type) >> ws? >> func_signature.as(:func_decl) }
+      rule(:func_decl?) { func_decl.maybe }
 
       rule(:identifier) { match('[A-Za-z_]').repeat(1) }
 
