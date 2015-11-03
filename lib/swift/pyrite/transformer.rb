@@ -76,10 +76,8 @@ module Swift
       end
 
       def returns(returnTypes)
-        p returnTypes
         return if returnTypes.nil?
-        output = []
-        return "-> #{returnTypes} "
+        "-> #{returnTypes} "
       end
 
     end
