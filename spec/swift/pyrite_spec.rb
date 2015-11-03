@@ -50,4 +50,13 @@ describe Swift::Pyrite do
     end
   end
 
+  context "a couple argument method" do
+    let(:name) { 'two_arguments' }
+
+    it 'parses' do
+      Swift::Pyrite.generate_fake_for("TwoArguments", fixture_path, output_path)
+      expect(actual_code).to(eq(expected_code))
+    end
+  end
+
 end

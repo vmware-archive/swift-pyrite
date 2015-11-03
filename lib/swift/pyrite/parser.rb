@@ -29,9 +29,11 @@ module Swift
       rule(:funcSignature) { indentation >> str("func").as(:type) >> space >> (identifier.as(:name) >> 
         lparen >> arguments.as(:arguments).maybe >> rparen).as(:funcSignature) >> 
         newline 
-    }
+      }
 
-      rule(:arguments) { (identifier.as(:name) >> colon >> space? >> identifier.as(:type)).repeat(1) }
+      rule(:comma) { str(",") }
+      rule(:comma_space) { space? >> comma.maybe >> space? }
+      rule(:arguments) { (identifier.as(:name) >> colon >> space? >> identifier.as(:type) >> comma_space).repeat(1) }
 
       rule(:expression)  { funcSignature.repeat(1) }
       rule(:expression?) { expression.maybe }
