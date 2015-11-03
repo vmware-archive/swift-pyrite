@@ -68,4 +68,13 @@ describe Swift::Pyrite do
     end
   end
 
+  context "method returning an array" do
+    let(:name) { 'array_return' }
+
+    it 'parses' do
+      Swift::Pyrite.generate_fake_for("ArrayReturn", fixture_path, output_path)
+      expect(actual_code).to(eq(expected_code))
+    end
+  end
+
 end

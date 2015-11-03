@@ -9,7 +9,7 @@ module Swift
         rcurly 
       }
 
-      rule(:identifier) { match("[A-Za-z_]").repeat(1) }
+      rule(:identifier) { lsquare.maybe >> match("[A-Za-z_]").repeat(1) >> rsquare.maybe}
 
       rule(:space)      { match(/\s/).repeat(1) }
       rule(:space?)     { space.maybe }
@@ -23,15 +23,21 @@ module Swift
       rule(:lparen)     { str("(") }
       rule(:rparen)     { str(")") }
 
+      rule(:lsquare)    { str("[") }
+      rule(:rsquare)    { str("]") }
+
       rule(:colon)      { str(":") }
 
       rule(:arrow)      { space? >> str("->") >> space? }
 
       rule(:indentation) { (str(' ') | str("\t")).repeat(1).maybe }
+
       rule(:funcSignature) { indentation >> str("func").as(:type) >> space >> (identifier.as(:name) >> 
-        lparen >> arguments.as(:arguments).maybe >> rparen >> (arrow >> identifier.as(:returnType)).maybe).as(:funcSignature) >> 
+        lparen >> arguments.as(:arguments).maybe >> rparen >> (arrow >> lparen.maybe >> identifier.as(:returnTypes) >> rparen.maybe).maybe).as(:funcSignature) >> 
         newline 
       }
+
+      rule(:returnTypes) { (identifier.as(:returnType) >> comma_space.maybe).repeat(1) }
 
       rule(:comma) { str(",") }
       rule(:comma_space) { space? >> comma.maybe >> space? }
