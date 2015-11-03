@@ -10,6 +10,8 @@ module Swift
       rule(:comment) { ws? >> str('//') >> match(/[^\n]/).repeat }
       rule(:ig) { (comment | block_comment | ws).repeat }
 
+      rule(:ignore_before) { block_comment | comment | (str('protocol').absent? >> any) }
+
       rule(:generic) { str('<') >> type >> str('>') }
       rule(:type) { (str('[').maybe >> identifier >> generic.maybe >> str(']').maybe).as(:type) }
 
@@ -29,7 +31,7 @@ module Swift
 
       rule(:protocol) { str('protocol') >> ig >> identifier.as(:protocol) >> ig >> brace_expression }
 
-      rule(:source_file) { ig >> protocol >> ig }
+      rule(:source_file) { ignore_before.repeat >> protocol >> any.repeat }
 
       rule(:root) { source_file }
     end

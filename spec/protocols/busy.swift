@@ -1,4 +1,4 @@
-// comment on a protocol { }
+// comment on a protocol name { }
 protocol Busy {
 	func funky()
 }
