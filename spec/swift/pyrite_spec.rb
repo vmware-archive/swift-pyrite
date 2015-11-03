@@ -95,4 +95,13 @@ describe Swift::Pyrite do
     end
   end
 
+  context "block comments" do
+    let(:name) { 'block_comment' }
+
+    it 'parses' do
+      Swift::Pyrite.generate_fake_for("BlockComment", fixture_path, output_path)
+      expect(actual_code).to(eq(expected_code))
+    end
+  end
+
 end

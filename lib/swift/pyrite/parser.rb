@@ -6,7 +6,7 @@ module Swift
       rule(:ws) { match(/\s/).repeat(1) }
       rule(:ws?) { ws.maybe }
 
-      rule(:block_comment) { ws? >> str('/*') >> any >> str('*/') >> ws? }
+      rule(:block_comment) { ws? >> str('/*') >> (str('*/').absent? >> any).repeat >> str('*/') >> ws? }
       rule(:comment) { ws? >> str('//') >> match(/[^\n]/).repeat }
       rule(:ig) { (comment | block_comment | ws).repeat }
 
