@@ -16,8 +16,10 @@ module Swift
       rule(:empty_tuple) { str('(') >> ws? >> str(')') }
 
       rule(:func_signature) { identifier.as(:name) >> ws? >> (tuple.as(:arguments) | empty_tuple) >> ws? }
-      rule(:func_decl) { ws? >> str('func').as(:type) >> ws? >> func_signature.as(:func_decl) }
+      rule(:func_decl) { ws? >> str('func').as(:type) >> ws? >> (func_signature >> returnTypes.maybe).as(:func_decl) >> ws? }
       rule(:func_decl?) { func_decl.maybe }
+
+      rule(:returnTypes) { ws? >> str('->') >> ws? >> (type | tuple).as(:returnTypes) }
 
       rule(:identifier) { match('[A-Za-z_]').repeat(1) }
 
