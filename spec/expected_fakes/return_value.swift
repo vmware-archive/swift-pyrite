@@ -1,4 +1,7 @@
 class FakeReturnValue: ReturnValue {
+  init(stringifyReturns: String) {
+    self.stringifyReturns = stringifyReturns
+  }
   var stringifyCallCount: Int = 0
   var stringifyCalledWith: [(Int)] = [(Int)]()
   var stringifyReturns: String

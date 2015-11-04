@@ -44,12 +44,21 @@ module Swift
         output = []
         vars = []
         (@ast[:expressions] || []).map do |exp|
-          next if exp[:type] != 'var'
-          e = exp[:var_decl]
-          name, type = e[:name], unwind_type(e)
-          output << "    self.#{name} = #{name}"
-          vars << "#{name}: #{type}"
+          if exp[:type] == 'var'
+            e = exp[:var_decl]
+            name, type = e[:name], unwind_type(e)
+            output << "    self.#{name} = #{name}"
+            vars << "#{name}: #{type}"
+          elsif exp[:type] == 'func'
+            e = exp[:func_decl]
+            next unless r = e[:returnTypes]
+            name = "#{e[:name]}Returns"
+            output << "    self.#{name} = #{name}"
+            type = tuple(r)
+            vars << "#{name}: #{type}"
+          end
         end
+
         if output.size > 0
           output.unshift("  init(#{vars.join(', ')}) {")
           output << "  }"
