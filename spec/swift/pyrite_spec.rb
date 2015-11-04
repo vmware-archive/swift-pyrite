@@ -18,7 +18,7 @@ describe Swift::Pyrite do
 
   shared_examples_for "a swift file" do
     it "parses" do
-      Swift::Pyrite.generate_fake_for(protocol, fixture_path, output_path)
+      Swift::Pyrite.generate_fake_for(fixture_path, output_path)
       expect(actual_code).to(eq(expected_code))
     end
   end
@@ -40,8 +40,7 @@ describe Swift::Pyrite do
   }.each do |file|
     context file do
       let(:name) { file }
-      let(:protocol) { file.classify }
-      it_behaves_like("a swift file") 
+      it_behaves_like("a swift file")
     end
   end
 end

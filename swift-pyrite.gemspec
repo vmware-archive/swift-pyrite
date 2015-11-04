@@ -6,12 +6,12 @@ require 'swift/pyrite/version'
 Gem::Specification.new do |spec|
   spec.name          = "swift-pyrite"
   spec.version       = Swift::Pyrite::VERSION
-  spec.authors       = ["TODO: Write your name"]
-  spec.email         = ["TODO: Write your email address"]
+  spec.authors       = ["Genevieve L'Esperance", "Ehren Murdick"]
+  spec.email         = ["emurdick@pivotal.io", "glesperance@pivotal.io"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{Pyrite generates instrumented fakes for swift protocols}
+  spec.description   = %q{Pyrite generates instrumented fakes for swift protocols. It's a clone of github.com/maxbrunsfeld/counterfeiter}
+  spec.homepage      = "http://google.com"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
@@ -24,14 +24,15 @@ Gem::Specification.new do |spec|
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.executables   = "pyrite"
   spec.require_paths = ["lib"]
 
-  spec.add_dependency 'parslet'
+  spec.add_dependency 'parslet', '~> 1.7'
+  spec.add_dependency 'thor', "~> 0.19"
 
   spec.add_development_dependency "bundler", "~> 1.10"
-  spec.add_development_dependency "activesupport"
+  spec.add_development_dependency "activesupport", "~> 4.2"
   spec.add_development_dependency "rake", "~> 10.0"
 
-  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "rspec", "~> 3.3"
 end

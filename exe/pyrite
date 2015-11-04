@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require 'swift/pyrite'
+
+Swift::Pyrite::Cli.start(ARGV)
