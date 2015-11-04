@@ -15,6 +15,19 @@ module Swift
         "Fake#{protocol_name}"
       end
 
+      def unwind_type exp
+        output = []
+        output << exp[:type_name]
+        if exp[:generic]
+          output << "<#{unwind_type(exp[:generic])}>"
+        end
+        if exp[:bracketed]
+          output.unshift('[')
+          output << ']'
+        end
+        output.join
+      end
+
       def generate
         output = []
         output << "class #{struct_name}: #{protocol_name} {"
@@ -33,11 +46,11 @@ module Swift
         (@ast[:expressions] || []).map do |exp|
           next if exp[:type] != 'var'
           e = exp[:var_decl]
-          name, type = e[:name], e[:type]
+          name, type = e[:name], unwind_type(e)
           output << "    self.#{name} = #{name}"
           vars << "#{name}: #{type}"
         end
-        if output.size > 0 
+        if output.size > 0
           output.unshift("  init(#{vars.join(', ')}) {")
           output << "  }"
         end
@@ -56,7 +69,7 @@ module Swift
 
       def copy_variable(exp)
         name = exp[:name]
-        type = exp[:type]
+        type = unwind_type(exp)
         "  var #{name}: #{type}"
       end
 
@@ -81,7 +94,9 @@ module Swift
         output = []
         output << "  var #{exp[:name]}CallCount: Int = 0"
         unless exp[:arguments].nil?
-          types = exp[:arguments].map {|a| a[:type] }
+          types = exp[:arguments].map do |a|
+            unwind_type(a)
+          end
           tupleType = "(" + types.join(", ") + ")"
           output << "  var #{exp[:name]}CalledWith: [#{tupleType}] = [#{tupleType}]()"
         end
@@ -94,12 +109,12 @@ module Swift
       def tuple(exp)
         results = exp.map do |item|
           if item[:name]
-            "#{item[:name]}: #{item[:type]}"
+            "#{item[:name]}: #{unwind_type(item)}"
           else
-            item[:type]
+            unwind_type(item)
           end
         end
-        if results.count > 1 
+        if results.count > 1
           "(#{results.join(', ')})"
         else
           results.join
@@ -110,7 +125,7 @@ module Swift
         return if exp.nil?
         output = []
         exp.each do |arg|
-          output << "#{arg[:name]}: #{arg[:type]}"
+          output << "#{arg[:name]}: #{unwind_type(arg)}"
         end
         output.join(", ")
       end

@@ -14,8 +14,8 @@ describe Swift::Pyrite do
   let(:fixture_path) { File.join(File.dirname(__FILE__), "../protocols/#{name}") }
   let(:expected_path) { File.join(File.dirname(__FILE__), "../expected_fakes/#{name}") }
 
-  let(:expected_code) { File.read(expected_path) }
-  let(:actual_code) { File.read(output_path) }
+  let(:expected_code) { File.read(expected_path).strip }
+  let(:actual_code) { File.read(output_path).strip }
 
   shared_examples_for "a swift file" do
     it "parses" do
@@ -25,7 +25,7 @@ describe Swift::Pyrite do
   end
 
   here = File.dirname(__FILE__)
-  path = '../expected_fakes'
+  path = '../protocols'
   Dir.glob(File.join(here, path, '*.swift')).each do |file|
     file = File.basename(file)
     context file do
