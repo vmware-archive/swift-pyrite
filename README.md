@@ -1,28 +1,22 @@
 # Swift::Pyrite
+Pyrite generates instrumented fakes for swift protocols! It is inspired by golang's [counterfeiter](https://github.com/maxbrunsfeld/counterfeiter). 
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/swift/pyrite`. To experiment with that code, run `bin/console` for an interactive prompt.
+Pyrite will generate a fake which conforms to the first protocol definition it finds in the input file. Presently it only supports one protocol per file.
 
-TODO: Delete this and the text above, and describe your gem
+For some examples, look in the [spec/protocols](https://github.com/pivotal/swift-pyrite/tree/master/spec/expected_fakes) directory for input, and the spec/[expected_fakes](https://github.com/pivotal/swift-pyrite/tree/master/spec/expected_fakes) directory to see the generated output. 
 
 ## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'swift-pyrite'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
 
     $ gem install swift-pyrite
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+$ pyrite help
+Commands:
+  pyrite generate INPUT_PATH OUTPUT_PATH  # Generates a fake for protocol in INPUT_PATH and writes it to OUTPUT_PATH
+  pyrite help [COMMAND]                   # Describe available commands or one specific command
+```
 
 ## Development
 
@@ -32,7 +26,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/swift-pyrite. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/pivotal/swift-pyrite. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
 
 
 ## License
