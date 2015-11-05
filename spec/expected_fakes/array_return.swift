@@ -1,6 +1,6 @@
 class FakeArrayReturn: ArrayReturn {
   init(stringifyReturns: [String]) {
-      self.stringifyReturns = stringifyReturns
+    self.stringifyReturns = stringifyReturns
   }
   var stringifyCallCount: Int = 0
   var stringifyCalledWith: [(Int)] = [(Int)]()
